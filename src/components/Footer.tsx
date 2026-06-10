@@ -1,171 +1,56 @@
-"use client";
-
 import Link from "next/link";
 
-const FOOTER_COLS = [
-  {
-    title: "Exchanges",
-    accentColor: "#FF5722",
-    links: [
-      { href: "/compare",             label: "Compare exchanges" },
-      { href: "/reviews",             label: "All reviews" },
-      { href: "/bonuses",             label: "Signup bonuses" },
-      { href: "/tools/fee-breakdown", label: "Hidden fee calculator" },
-      { href: "/quiz",                label: "Find my exchange" },
-    ],
-  },
-  {
-    title: "Wallets & Security",
-    accentColor: "#002FA7",
-    links: [
-      { href: "/hardware-wallets",                 label: "Hardware wallets" },
-      { href: "/hardware-wallets/ledger-vs-trezor", label: "Ledger vs Trezor" },
-      { href: "/security",                          label: "Security overview" },
-      { href: "/security/vpn",                      label: "Best VPNs" },
-      { href: "/security/password-managers",        label: "Password managers" },
-    ],
-  },
-  {
-    title: "Tax & Tools",
-    accentColor: "#111111",
-    links: [
-      { href: "/tax-software",  label: "Crypto tax software" },
-      { href: "/trading-bots",  label: "Trading bots" },
-      { href: "/cloud-mining",  label: "Cloud mining" },
-      { href: "/alerts",        label: "Bonus alerts" },
-      { href: "/ai-advisor",    label: "AI advisor" },
-    ],
-  },
-  {
-    title: "Site",
-    accentColor: "#FFD600",
-    links: [
-      { href: "/about",      label: "About" },
-      { href: "/disclosure", label: "Affiliate disclosure" },
-      { href: "/privacy",    label: "Privacy policy" },
-    ],
-  },
-];
+const FOOTER_LINKS = {
+  "Exchanges": [
+    { href: "/reviews/binance", label: "Binance review" },
+    { href: "/reviews/coinbase", label: "Coinbase review" },
+    { href: "/reviews/kraken", label: "Kraken review" },
+    { href: "/reviews/bybit", label: "Bybit review" },
+    { href: "/reviews/okx", label: "OKX review" },
+  ],
+  "Tools": [
+    { href: "/compare", label: "Exchange comparison" },
+    { href: "/tools/fee-calculator", label: "Fee calculator" },
+    { href: "/bonuses", label: "Signup bonuses" },
+  ],
+  "Site": [
+    { href: "/about", label: "About" },
+    { href: "/disclosure", label: "Affiliate disclosure" },
+    { href: "/privacy", label: "Privacy policy" },
+    { href: "/contact", label: "Contact" },
+  ],
+};
 
 export function Footer() {
   return (
-    <footer
-      style={{
-        background: "#111111",
-        color: "#F4F4F0",
-        borderTop: "3px solid #111111",
-        marginTop: "80px",
-        position: "relative",
-      }}
-      data-testid="site-footer"
-    >
-      {/* Yellow stripe accent */}
-      <div style={{ height: "8px", background: "repeating-linear-gradient(-45deg, #FFD600 0 12px, #111111 12px 24px)" }} />
-
-      <div className="container" style={{ paddingTop: "56px", paddingBottom: "32px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr", gap: "40px", alignItems: "flex-start" }}>
-          {/* Brand column */}
-          <div>
-            <p style={{ fontFamily: "var(--font-display)", fontWeight: 900, fontSize: "24px", color: "#F4F4F0", letterSpacing: "-0.04em", marginBottom: "14px" }}>
-              CRYPTO<span style={{ color: "#FF5722" }}>/</span>FFILIATE
+    <footer className="bg-white border-t border-slate-100 mt-24">
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
+          {/* Brand */}
+          <div className="col-span-2 sm:col-span-1">
+            <p className="font-bold text-slate-900 mb-2">
+              crypto<span className="text-brand-500">ffiliate</span>
             </p>
-            <p style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#9A9A9A", lineHeight: 1.6, maxWidth: "280px", marginBottom: "24px" }}>
-              AI-powered crypto intelligence. Live fee data, unbiased reviews, and a real advisor built in — no paid placements.
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Independent crypto exchange reviews, comparisons, and tools since
+              2025.
             </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <Link
-                href="/ai-advisor"
-                data-testid="footer-cta-ai"
-                className="btn-primary"
-                style={{ fontSize: "11px", padding: "10px 18px", justifyContent: "center", textAlign: "center" }}
-              >
-                Ask the AI →
-              </Link>
-              <Link
-                href="/alerts"
-                data-testid="footer-cta-alerts"
-                className="btn-ghost"
-                style={{ fontSize: "11px", padding: "10px 18px", justifyContent: "center", textAlign: "center", background: "#1A1A1A", color: "#F4F4F0", borderColor: "#555555" }}
-              >
-                ▲ Set alerts
-              </Link>
-            </div>
-
-            {/* Social */}
-            <div style={{ marginTop: "24px", display: "flex", gap: "10px" }}>
-              <a
-                href="https://instagram.com/Cryptoffiliate"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  letterSpacing: ".12em",
-                  textTransform: "uppercase",
-                  color: "#F4F4F0",
-                  textDecoration: "none",
-                  border: "2px solid #555555",
-                  padding: "6px 12px",
-                  transition: "border-color .12s, color .12s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "#FF5722";
-                  (e.currentTarget as HTMLElement).style.color = "#FF5722";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "#555555";
-                  (e.currentTarget as HTMLElement).style.color = "#F4F4F0";
-                }}
-              >
-                IG @Cryptoffiliate
-              </a>
-            </div>
           </div>
 
-          {/* Link columns */}
-          {FOOTER_COLS.map((col) => (
-            <div key={col.title}>
-              <p
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  letterSpacing: ".25em",
-                  textTransform: "uppercase",
-                  color: col.accentColor === "#111111" ? "#9A9A9A" : col.accentColor,
-                  marginBottom: "16px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-              >
-                <span style={{ width: 8, height: 8, background: col.accentColor === "#111111" ? "#9A9A9A" : col.accentColor, flexShrink: 0 }} />
-                {col.title}
+          {/* Links */}
+          {Object.entries(FOOTER_LINKS).map(([group, links]) => (
+            <div key={group}>
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">
+                {group}
               </p>
-              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "8px", padding: 0 }}>
-                {col.links.map(({ href, label }) => (
+              <ul className="space-y-2">
+                {links.map(({ href, label }) => (
                   <li key={href}>
                     <Link
                       href={href}
-                      style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: "13px",
-                        color: "#9A9A9A",
-                        textDecoration: "none",
-                        transition: "color .12s",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "6px",
-                      }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#F4F4F0"; }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#9A9A9A"; }}
+                      className="text-sm text-slate-500 hover:text-slate-900 transition-colors"
                     >
-                      → {label}
+                      {label}
                     </Link>
                   </li>
                 ))}
@@ -174,14 +59,18 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar */}
-        <div style={{ borderTop: "1px solid #2A2A2A", marginTop: "48px", paddingTop: "24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
-          <p style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#6B6B6B", maxWidth: "640px", lineHeight: 1.6 }}>
-            <strong style={{ color: "#FFD600" }}>AFFILIATE DISCLOSURE:</strong>{" "}
-            Cryptoffiliate.com earns commissions via links at no cost to you. Ratings are independent. Not financial advice.
+        {/* Affiliate disclosure */}
+        <div className="border-t border-slate-100 pt-6">
+          <p className="text-xs text-slate-400 leading-relaxed max-w-3xl">
+            <strong className="text-slate-500">Affiliate disclosure:</strong>{" "}
+            Cryptoffiliate.com earns commissions when you sign up or trade
+            through links on this site, at no extra cost to you. This never
+            influences our ratings — exchanges are evaluated independently.
+            Crypto investments carry significant risk. Not financial advice.
           </p>
-          <p style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#555555" }}>
-            © {new Date().getFullYear()} CRYPTOFFILIATE
+          <p className="text-xs text-slate-400 mt-2">
+            © {new Date().getFullYear()} Cryptoffiliate.com · All rights
+            reserved
           </p>
         </div>
       </div>

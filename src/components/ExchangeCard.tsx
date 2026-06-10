@@ -6,32 +6,16 @@ interface Props {
   exchange: Exchange;
 }
 
-// Map neon colors → editorial palette
-function toEditorialColor(neonColor: string): string {
-  const map: Record<string, string> = {
-    "#00F0FF": "#002FA7",
-    "#00FF94": "#00C853",
-    "#B026FF": "#002FA7",
-    "#C4FF00": "#111111",
-    "#FF8A3D": "#FF5722",
-    "#FF3D71": "#D50000",
-    "#4D8DFF": "#002FA7",
-    "#FFC93C": "#FF8A00",
-  };
-  return map[neonColor] || neonColor;
-}
-
-function StarRow({ rating }: { rating: number }) {
-  const rounded = Math.round(rating);
+function Stars({ rating }: { rating: number }) {
   return (
-    <span style={{ display: "inline-flex", gap: 2, alignItems: "center" }}>
+    <span className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map((s) => (
         <svg key={s} width="12" height="12" viewBox="0 0 12 12">
           <polygon
             points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"
-            fill={s <= rounded ? "#FF5722" : "none"}
-            stroke={s <= rounded ? "#FF5722" : "#CCCCCC"}
-            strokeWidth="1.2"
+            fill={s <= Math.round(rating) ? "#F0B90B" : "none"}
+            stroke="#F0B90B"
+            strokeWidth="0.8"
           />
         </svg>
       ))}
@@ -40,171 +24,93 @@ function StarRow({ rating }: { rating: number }) {
 }
 
 export function ExchangeCard({ exchange }: Props) {
-  const accentColor = toEditorialColor(exchange.logoColor);
-
   return (
-    <article
-      data-testid={`exchange-card-${exchange.id}`}
-      className="glow-card"
-      style={{
-        padding: "22px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "14px",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Colored top border accent */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "4px",
-          background: accentColor,
-        }}
-      />
-
+    <div className="card p-5 flex flex-col gap-4 hover:shadow-md transition-shadow">
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginTop: "8px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3">
           <div
+            className="w-10 h-10 rounded-lg flex items-center justify-center text-xs font-black font-mono flex-shrink-0"
             style={{
-              width: "44px",
-              height: "44px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "var(--font-mono)",
-              fontSize: "13px",
-              fontWeight: 800,
-              background: "#111111",
-              border: "2px solid #111111",
-              borderRadius: 0,
-              color: accentColor === "#111111" ? "#F4F4F0" : accentColor,
-              flexShrink: 0,
+              background: exchange.logoColor + "18",
+              border: `1.5px solid ${exchange.logoColor}40`,
+              color: exchange.logoColor,
             }}
           >
             {exchange.logo}
           </div>
           <div>
-            <p style={{ fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: 800, color: "#111111", letterSpacing: "-.01em" }}>
+            <p className="font-semibold text-slate-900 text-sm">
               {exchange.name}
             </p>
-            <StarRow rating={exchange.rating} />
+            <p className="text-xs text-slate-400">{exchange.tagline}</p>
           </div>
         </div>
-
-        {exchange.recommended && (
+        {exchange.badge && (
           <span
+            className="text-xs px-2 py-0.5 rounded-full font-semibold flex-shrink-0"
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "9px",
-              fontWeight: 700,
-              letterSpacing: ".14em",
-              textTransform: "uppercase",
-              padding: "3px 8px",
-              border: "2px solid #FF5722",
-              background: "#FF5722",
-              color: "#111111",
-              borderRadius: 0,
-              flexShrink: 0,
+              background: exchange.badgeColor! + "18",
+              color: exchange.badgeColor!,
+              border: `1px solid ${exchange.badgeColor}40`,
             }}
           >
-            TOP PICK
+            {exchange.badge}
           </span>
         )}
       </div>
 
-      {/* Description */}
-      {exchange.description && (
-        <p style={{ fontFamily: "var(--font-body)", fontSize: "13.5px", color: "#4A4A4A", lineHeight: 1.5 }}>
-          {exchange.description}
-        </p>
-      )}
+      {/* Rating */}
+      <div className="flex items-center gap-2">
+        <Stars rating={exchange.rating} />
+        <span className="text-sm font-semibold text-slate-900">
+          {exchange.rating}
+        </span>
+        <span className="text-xs text-slate-400">
+          ({(exchange.reviews / 1000).toFixed(1)}k reviews)
+        </span>
+      </div>
 
-      {/* Fee stats grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0", border: "2px solid #111111" }}>
+      {/* Stats row */}
+      <div className="grid grid-cols-3 gap-2">
         {[
-          { label: "Maker fee", value: exchange.makerFee },
-          { label: "Taker fee", value: exchange.takerFee },
-        ].map((item, idx) => (
+          { label: "Maker fee", value: `${exchange.makerFee}%` },
+          { label: "Coins", value: `${exchange.coins}+` },
+          { label: "Min deposit", value: exchange.minDeposit },
+        ].map(({ label, value }) => (
           <div
-            key={idx}
-            style={{
-              padding: "10px 12px",
-              borderRight: idx === 0 ? "2px solid #111111" : "none",
-              background: idx % 2 === 0 ? "#FFFFFF" : "#F4F4F0",
-            }}
+            key={label}
+            className="bg-slate-50 rounded-lg p-2 text-center"
           >
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: "9px", fontWeight: 700, color: "#4A4A4A", letterSpacing: ".18em", textTransform: "uppercase", marginBottom: "4px" }}>
-              {item.label}
-            </p>
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: "18px", fontWeight: 700, color: "#111111" }}>
-              {item.value}
-            </p>
+            <p className="text-xs font-semibold text-slate-900">{value}</p>
+            <p className="text-xs text-slate-400">{label}</p>
           </div>
         ))}
       </div>
 
-      {/* Bonus badge */}
-      {exchange.bonus && (
-        <div
-          style={{
-            background: "#FFD600",
-            border: "2px solid #111111",
-            padding: "8px 12px",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
+      {/* Bonus */}
+      <p className="text-xs text-emerald-600 font-medium bg-emerald-50 rounded-lg px-3 py-2 border border-emerald-100">
+        🎁 {exchange.bonus}
+      </p>
+
+      {/* CTAs */}
+      <div className="flex gap-2 mt-auto">
+        <a
+          href={buildAffiliateUrl(exchange.affiliateUrl, exchange.id, "table")}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          className="flex-1 text-center text-sm font-semibold py-2 px-3 rounded-lg transition-colors text-white"
+          style={{ background: exchange.logoColor }}
         >
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", fontWeight: 700, color: "#111111", letterSpacing: ".14em", textTransform: "uppercase" }}>
-            ★ BONUS
-          </span>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: "12px", fontWeight: 700, color: "#111111" }}>
-            {exchange.bonus}
-          </span>
-        </div>
-      )}
-
-      {/* CTA */}
-      <a
-        href={buildAffiliateUrl(exchange)}
-        target="_blank"
-        rel="noopener noreferrer sponsored"
-        data-testid={`exchange-card-cta-${exchange.id}`}
-        className="aff-btn"
-        style={{ justifyContent: "center", textAlign: "center" }}
-      >
-        Get started →
-      </a>
-
-      {/* Review link */}
-      {exchange.reviewSlug && (
+          Visit {exchange.name}
+        </a>
         <Link
-          href={`/reviews/${exchange.reviewSlug}`}
-          data-testid={`exchange-card-review-${exchange.id}`}
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "11px",
-            color: "#4A4A4A",
-            textDecoration: "none",
-            textAlign: "center",
-            letterSpacing: ".08em",
-            borderTop: "1px solid #EAEAEA",
-            paddingTop: "10px",
-            display: "block",
-            transition: "color .12s",
-          }}
-          onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "#111111"; }}
-          onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "#4A4A4A"; }}
+          href={`/reviews/${exchange.slug}`}
+          className="btn-outline text-xs px-3"
         >
-          → Read full review
+          Review
         </Link>
-      )}
-    </article>
+      </div>
+    </div>
   );
 }
