@@ -4,6 +4,8 @@ export interface Exchange {
   logo?: string;
   accentColor: string;
   logoColor: string;
+  recommended?: boolean;
+  description?: string;
   rating: number;
   reviewCount: number;
   makerFee: number;
@@ -13,4 +15,6 @@ export interface Exchange {
   highlights: string[];
   affiliateUrl: string;
   bonusText?: string;
+  bonus?: string;
+  reviewSlug?: string;
 }
