@@ -3,6 +3,7 @@ export interface Exchange {
   name: string;
   logo?: string;
   accentColor: string;
+  logoColor: string;
   rating: number;
   reviewCount: number;
   makerFee: number;
