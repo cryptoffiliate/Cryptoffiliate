@@ -9,19 +9,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50:  "#eef2ff",
-          100: "#e0e7ff",
-          200: "#c7d2fe",
-          400: "#818cf8",
-          500: "#6366f1",
-          600: "#4f46e5",
-          700: "#4338ca",
-          900: "#312e81",
-        },
+        ink:     "#0A0A0A",
+        bone:    "#F5F0E8",
+        paper:   "#FFFFFF",
+        vermil:  "#FF4500",
+        gold:    "#FFD700",
+        chrome:  "#6B7280",
+        wire:    "#E5E0D8",
       },
       fontFamily: {
-        sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
+        sans:    ["var(--font-inter)", "system-ui", "sans-serif"],
+        display: ["var(--font-playfair)", "Georgia", "serif"],
+        mono:    ["var(--font-jetbrains)", "ui-monospace", "monospace"],
+      },
+      fontSize: {
+        "2xs": ["0.65rem", { lineHeight: "1rem" }],
       },
     },
   },
